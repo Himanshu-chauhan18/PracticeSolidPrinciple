@@ -1,4 +1,8 @@
-import { disconnect } from "process";
+// the code follows the principle of (Single Responsibility) to some extent. The Product class is responsible for managing product-related data and operations such as retrieving product details and calculating discounts. Meanwhile, the CalculatePrices class is responsible for calculating prices and generating invoices based on the products.
+
+// However, there's a slight violation of the Single Responsibility Principle in the Product class. Initially, it was handling both product management and price calculations, but the price calculation functionality was moved to the CalculatePrices class, which is good 
+
+// the code structure is moving in the right direction by separating concerns between managing products and calculating prices.
 
 class Product{
     ProductList:any=[{id:1,name:'Bread',price:20},{id:2,name:'Shampoo',price:10}];
@@ -7,17 +11,17 @@ class Product{
         return this.ProductList;
     }
     
-    getProductById(id:any){
-        return this.ProductList.filter((product:any)=>id==product.id)
+    getProductById(id:Number){
+        return this.ProductList.filter((product:{id:Number,name:String,price:Number})=>id==product.id)
     }
 
-    getProductNameById(id:any){
-        const product = this.ProductList.find((product: any) => id == product.id);
+    getProductNameById(id:Number){
+        const product = this.ProductList.find((product: {id:Number,name:String,price:Number}) => id == product.id);
         return product ? product.name : null;
     }
 
-    getProductPriceById(id:any){
-        const product = this.ProductList.find((product: any) => id == product.id);
+    getProductPriceById(id:Number){
+        const product = this.ProductList.find((product: {id:Number,name:String,price:Number}) => id == product.id);
         return product ? product.price : null;
     }
 
@@ -48,12 +52,12 @@ class CalculatePrices{
     constructor(public productInstance:Product){
 
     }
-    calculateProductPrice(id:any){
+    calculateProductPrice(id:Number){
         let amount = this.productInstance.getProductPriceById(id);
         return amount - this.discountVAL;
     }
 
-    getProductInvoice(id:any){
+    getProductInvoice(id:Number){
         console.log("Product Name:",this.productInstance.getProductNameById(id))
         console.log("Product Price:",this.productInstance.getProductPriceById(id))
         console.log("------------------------------")
